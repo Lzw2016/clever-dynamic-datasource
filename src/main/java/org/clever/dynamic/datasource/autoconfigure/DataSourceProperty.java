@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.clever.dynamic.datasource.autoconfigure.druid.DruidConfig;
 import org.clever.dynamic.datasource.autoconfigure.hikari.HikariCpConfig;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import javax.sql.DataSource;
 
@@ -46,9 +47,11 @@ public class DataSourceProperty {
     /**
      * Druid参数配置
      */
+    @NestedConfigurationProperty
     private DruidConfig druid = new DruidConfig();
     /**
      * HikariCp参数配置
      */
+    @NestedConfigurationProperty
     private HikariCpConfig hikari = new HikariCpConfig();
 }
