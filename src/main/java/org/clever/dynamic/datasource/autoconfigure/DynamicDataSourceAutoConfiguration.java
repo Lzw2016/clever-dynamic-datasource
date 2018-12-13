@@ -1,13 +1,14 @@
 package org.clever.dynamic.datasource.autoconfigure;
 
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.clever.dynamic.datasource.DynamicRoutingDataSource;
+import org.clever.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
+import org.clever.dynamic.datasource.aop.DynamicDataSourceAnnotationInterceptor;
 import org.clever.dynamic.datasource.provider.DynamicDataSourceProvider;
 import org.clever.dynamic.datasource.provider.YmlDynamicDataSourceProvider;
 import org.clever.dynamic.datasource.strategy.DynamicDataSourceStrategy;
-import org.clever.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
-import org.clever.dynamic.datasource.aop.DynamicDataSourceAnnotationInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -27,7 +28,7 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(DynamicDataSourceProperties.class)
-@AutoConfigureBefore(DataSourceAutoConfiguration.class)
+@AutoConfigureBefore({DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
 //@Import(DruidDynamicDataSourceConfiguration.class)
 public class DynamicDataSourceAutoConfiguration {
 

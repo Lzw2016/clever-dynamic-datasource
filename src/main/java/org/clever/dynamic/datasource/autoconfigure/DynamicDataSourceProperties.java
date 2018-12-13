@@ -7,6 +7,7 @@ import org.clever.dynamic.datasource.autoconfigure.hikari.HikariCpConfig;
 import org.clever.dynamic.datasource.strategy.DynamicDataSourceStrategy;
 import org.clever.dynamic.datasource.strategy.LoadBalanceDynamicDataSourceStrategy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.Ordered;
 
 import java.util.LinkedHashMap;
@@ -31,10 +32,12 @@ public class DynamicDataSourceProperties {
     /**
      * Druid全局参数配置
      */
+    @NestedConfigurationProperty
     private DruidConfig globalDruid = new DruidConfig();
     /**
      * HikariCp全局参数配置
      */
+    @NestedConfigurationProperty
     private HikariCpConfig globalHikari = new HikariCpConfig();
     /**
      * 必须设置默认的库,默认master
@@ -43,5 +46,6 @@ public class DynamicDataSourceProperties {
     /**
      * 多数据源配置数据源
      */
+    @NestedConfigurationProperty
     private Map<String, DataSourceProperty> datasourceMap = new LinkedHashMap<>();
 }

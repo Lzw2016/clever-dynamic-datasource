@@ -29,6 +29,9 @@ public final class DynamicDataSourceContextHolder {
      */
     public static String getDataSourceLookupKey() {
         LinkedBlockingDeque<String> deque = LOOKUP_KEY_HOLDER.get();
+        if (deque == null) {
+            return null;
+        }
         return deque.isEmpty() ? null : deque.getFirst();
     }
 
@@ -38,7 +41,12 @@ public final class DynamicDataSourceContextHolder {
      * @param dataSourceLookupKey 数据源名称
      */
     public static void setDataSourceLookupKey(String dataSourceLookupKey) {
-        LOOKUP_KEY_HOLDER.get().addFirst(dataSourceLookupKey);
+        LinkedBlockingDeque<String> deque = LOOKUP_KEY_HOLDER.get();
+        if (deque == null) {
+            deque = new LinkedBlockingDeque<>();
+            LOOKUP_KEY_HOLDER.set(deque);
+        }
+        deque.addFirst(dataSourceLookupKey);
     }
 
     /**
@@ -50,6 +58,9 @@ public final class DynamicDataSourceContextHolder {
      */
     public static void clearDataSourceLookupKey() {
         LinkedBlockingDeque<String> deque = LOOKUP_KEY_HOLDER.get();
+        if (deque == null) {
+            return;
+        }
         if (deque.isEmpty()) {
             LOOKUP_KEY_HOLDER.remove();
         } else {
