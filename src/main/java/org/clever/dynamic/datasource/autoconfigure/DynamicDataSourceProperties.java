@@ -10,7 +10,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.Ordered;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,4 +49,8 @@ public class DynamicDataSourceProperties {
      * 多数据源配置数据源
      */
     private Map<String, DataSourceProperty> datasourceMap = new LinkedHashMap<>();
+    /**
+     * 多数据源配置数据源
+     */
+    private List<DataSourceProperty> datasourceList = new ArrayList<>();
 }
