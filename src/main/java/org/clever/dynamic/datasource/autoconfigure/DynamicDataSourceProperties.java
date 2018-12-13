@@ -46,6 +46,5 @@ public class DynamicDataSourceProperties {
     /**
      * 多数据源配置数据源
      */
-    @NestedConfigurationProperty
     private Map<String, DataSourceProperty> datasourceMap = new LinkedHashMap<>();
 }
