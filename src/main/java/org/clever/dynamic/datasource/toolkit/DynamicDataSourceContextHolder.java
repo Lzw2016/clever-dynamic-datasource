@@ -1,5 +1,6 @@
 package org.clever.dynamic.datasource.toolkit;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NamedThreadLocal;
 
 import java.util.concurrent.LinkedBlockingDeque;
@@ -7,6 +8,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 /**
  * 核心基于ThreadLocal的切换数据源工具类
  */
+@Slf4j
 public final class DynamicDataSourceContextHolder {
 
     /**
@@ -47,6 +49,7 @@ public final class DynamicDataSourceContextHolder {
             LOOKUP_KEY_HOLDER.set(deque);
         }
         deque.addFirst(dataSourceLookupKey);
+        log.debug("切换数据源 -> {}", dataSourceLookupKey);
     }
 
     /**

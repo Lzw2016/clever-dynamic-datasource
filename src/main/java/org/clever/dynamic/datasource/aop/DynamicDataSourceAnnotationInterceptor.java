@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 @Slf4j
 public class DynamicDataSourceAnnotationInterceptor implements MethodInterceptor {
 
+    private DynamicDataSourceClassResolver dynamicDataSourceClassResolver = new DynamicDataSourceClassResolver();
+
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         String dataSourceName = determineDatasource(invocation);
@@ -31,17 +33,19 @@ public class DynamicDataSourceAnnotationInterceptor implements MethodInterceptor
 
     private String determineDatasource(MethodInvocation invocation) {
         Method method = invocation.getMethod();
-        Class<?> declaringClass = invocation.getMethod().getDeclaringClass();
+        DynamicDataSourceClassResolver.TargetClass targetClass = dynamicDataSourceClassResolver.targetClass(invocation);
+        Class<?> declaringClass = targetClass.getClzz();
         DataSource ds;
-        if (method.isAnnotationPresent(DataSource.class)) {
+        if (!targetClass.isEnable()) {
+            ds = null;
+        } else if (method.isAnnotationPresent(DataSource.class)) {
             ds = method.getAnnotation(DataSource.class);
         } else {
             ds = AnnotationUtils.findAnnotation(declaringClass, DataSource.class);
         }
         if (ds == null) {
-            log.warn("### 当前@DataSource配置无效，建议删除@DataSource注解 {}", invocation.getMethod().toString());
+            log.warn("### @DataSource配置无效，建议删除@DataSource注解，位置 -> {}#{}", declaringClass.getName(), invocation.getMethod().getName());
         }
-        // Mapper 上面使用 @DataSource 不起作用报警告
         return ds == null ? null : ds.value();
     }
 }

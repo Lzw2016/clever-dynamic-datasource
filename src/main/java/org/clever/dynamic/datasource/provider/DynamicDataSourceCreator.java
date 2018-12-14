@@ -17,7 +17,7 @@ import java.sql.SQLException;
  * 数据源创建器
  */
 @Slf4j
-public class DynamicDataSourceCreator {
+class DynamicDataSourceCreator {
 
     /**
      * DRUID数据源类
@@ -52,7 +52,7 @@ public class DynamicDataSourceCreator {
     private DruidConfig druidGlobalConfig;
     private HikariCpConfig hikariGlobalConfig;
 
-    public DynamicDataSourceCreator(DruidConfig druidGlobalConfig, HikariCpConfig hikariGlobalConfig) {
+    DynamicDataSourceCreator(DruidConfig druidGlobalConfig, HikariCpConfig hikariGlobalConfig) {
         this.druidGlobalConfig = druidGlobalConfig;
         this.hikariGlobalConfig = hikariGlobalConfig;
         Class<?> builderClass = null;
@@ -97,7 +97,7 @@ public class DynamicDataSourceCreator {
      * @param dataSourceProperty 数据源信息
      * @return 数据源
      */
-    public DataSource createDataSource(DataSourceProperty dataSourceProperty) {
+    DataSource createDataSource(DataSourceProperty dataSourceProperty) {
         //如果是jndi数据源
         String jndiName = dataSourceProperty.getJndiName();
         if (jndiName != null && !jndiName.isEmpty()) {
@@ -168,12 +168,12 @@ public class DynamicDataSourceCreator {
         if (breakAfterAcquireFailure != null && breakAfterAcquireFailure.equals(true)) {
             dataSource.setBreakAfterAcquireFailure(true);
         }
+        log.info("创建druid数据源 -> {}", dataSourceProperty.getUrl());
         try {
             dataSource.init();
         } catch (SQLException e) {
             log.error("druid数据源启动失败", e);
         }
-        log.info("创建druid数据源 -> {}", dataSourceProperty.getUrl());
         return dataSource;
     }
 
