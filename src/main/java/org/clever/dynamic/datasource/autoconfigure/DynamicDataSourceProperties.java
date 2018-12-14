@@ -10,18 +10,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.Ordered;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * DynamicDataSourceProperties
  */
+@ConfigurationProperties(prefix = "spring.datasource.dynamic")
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "spring.datasource.dynamic")
-public class DynamicDataSourceProperties {
+public class DynamicDataSourceProperties implements Serializable {
 
     /**
      * AOP 切面顺序，默认优先级最高
@@ -49,8 +48,4 @@ public class DynamicDataSourceProperties {
      * 多数据源配置数据源
      */
     private Map<String, DataSourceProperty> datasourceMap = new LinkedHashMap<>();
-    /**
-     * 多数据源配置数据源
-     */
-    private List<DataSourceProperty> datasourceList = new ArrayList<>();
 }

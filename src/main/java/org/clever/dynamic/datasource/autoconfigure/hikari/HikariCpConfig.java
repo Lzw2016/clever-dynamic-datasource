@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  */
 @Data
 @Slf4j
-public class HikariCpConfig {
+public class HikariCpConfig implements Serializable {
 
     private static final long CONNECTION_TIMEOUT = SECONDS.toMillis(30);
     private static final long VALIDATION_TIMEOUT = SECONDS.toMillis(5);

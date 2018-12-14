@@ -1,20 +1,19 @@
 package org.clever.dynamic.datasource.autoconfigure;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.clever.dynamic.datasource.autoconfigure.druid.DruidConfig;
 import org.clever.dynamic.datasource.autoconfigure.hikari.HikariCpConfig;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import javax.sql.DataSource;
+import java.io.Serializable;
 
 /**
  * @author TaoYu
  * @since 1.2.0
  */
 @Data
-@Accessors(chain = true)
-public class DataSourceProperty {
+public class DataSourceProperty implements Serializable {
     /**
      * 连接池名称(只是一个名称标识)</br>
      * 默认是配置文件上的名称

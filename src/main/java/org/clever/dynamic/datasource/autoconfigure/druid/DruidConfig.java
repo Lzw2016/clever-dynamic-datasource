@@ -1,10 +1,9 @@
 package org.clever.dynamic.datasource.autoconfigure.druid;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.Properties;
 
 import static com.alibaba.druid.pool.DruidAbstractDataSource.*;
@@ -13,10 +12,8 @@ import static com.alibaba.druid.pool.DruidAbstractDataSource.*;
  * Druid参数配置
  */
 @Data
-@Accessors(chain = true)
-@NoArgsConstructor
 @Slf4j
-public class DruidConfig {
+public class DruidConfig implements Serializable {
 
     private Integer initialSize;
     private Integer maxActive;
