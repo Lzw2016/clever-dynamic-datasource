@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.clever.dynamic.datasource.DynamicRoutingDataSource;
 import org.clever.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor;
 import org.clever.dynamic.datasource.aop.DynamicDataSourceAnnotationInterceptor;
+import org.clever.dynamic.datasource.autoconfigure.druid.DruidDynamicDataSourceConfiguration;
 import org.clever.dynamic.datasource.provider.DynamicDataSourceProvider;
 import org.clever.dynamic.datasource.provider.YmlDynamicDataSourceProvider;
 import org.clever.dynamic.datasource.strategy.DynamicDataSourceStrategy;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import javax.sql.DataSource;
 
@@ -29,7 +31,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableConfigurationProperties(DynamicDataSourceProperties.class)
 @AutoConfigureBefore({DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
-//@Import(DruidDynamicDataSourceConfiguration.class)
+@Import(DruidDynamicDataSourceConfiguration.class)
 public class DynamicDataSourceAutoConfiguration {
 
     @Bean
