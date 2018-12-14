@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * DynamicDataSourceProperties
+ * 动态数据源配置
  */
 @ConfigurationProperties(prefix = "spring.datasource.dynamic")
 @Getter

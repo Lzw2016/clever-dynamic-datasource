@@ -1,4 +1,4 @@
-package org.clever.dynamic.datasource;
+package org.clever.dynamic.datasource.provider;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.zaxxer.hikari.HikariConfig;
@@ -115,27 +115,7 @@ public class DynamicDataSourceCreator {
         } else if (HIKARI_DATASOURCE.equals(type.getName())) {
             return createHikariDataSource(dataSourceProperty);
         }
-        return createBasicDataSource(dataSourceProperty);
-    }
-
-    /**
-     * 创建基础数据源
-     *
-     * @param dataSourceProperty 数据源参数
-     * @return 数据源
-     */
-    public DataSource createBasicDataSource(DataSourceProperty dataSourceProperty) {
-        try {
-            Object o1 = createMethod.invoke(null);
-            Object o2 = typeMethod.invoke(o1, dataSourceProperty.getType());
-            Object o3 = urlMethod.invoke(o2, dataSourceProperty.getUrl());
-            Object o4 = usernameMethod.invoke(o3, dataSourceProperty.getUsername());
-            Object o5 = passwordMethod.invoke(o4, dataSourceProperty.getPassword());
-            Object o6 = driverClassNameMethod.invoke(o5, dataSourceProperty.getDriverClassName());
-            return (DataSource) buildMethod.invoke(o6);
-        } catch (Exception e) {
-            throw new RuntimeException("多数据源创建数据源失败");
-        }
+        return createOtherDataSource(dataSourceProperty);
     }
 
     /**
@@ -144,7 +124,7 @@ public class DynamicDataSourceCreator {
      * @param jndiName jndi数据源名称
      * @return 数据源
      */
-    public DataSource createJNDIDataSource(String jndiName) {
+    private DataSource createJNDIDataSource(String jndiName) {
         return JNDI_DATA_SOURCE_LOOKUP.getDataSource(jndiName);
     }
 
@@ -154,7 +134,7 @@ public class DynamicDataSourceCreator {
      * @param dataSourceProperty 数据源参数
      * @return 数据源
      */
-    public DataSource createDruidDataSource(DataSourceProperty dataSourceProperty) {
+    private DataSource createDruidDataSource(DataSourceProperty dataSourceProperty) {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUsername(dataSourceProperty.getUsername());
         dataSource.setPassword(dataSourceProperty.getPassword());
@@ -203,7 +183,7 @@ public class DynamicDataSourceCreator {
      * @param dataSourceProperty 数据源参数
      * @return 数据源
      */
-    public DataSource createHikariDataSource(DataSourceProperty dataSourceProperty) {
+    private DataSource createHikariDataSource(DataSourceProperty dataSourceProperty) {
         HikariCpConfig hikariCpConfig = dataSourceProperty.getHikari();
         HikariConfig config = hikariCpConfig.toHikariConfig(hikariGlobalConfig);
         config.setUsername(dataSourceProperty.getUsername());
@@ -213,5 +193,25 @@ public class DynamicDataSourceCreator {
         config.setPoolName(dataSourceProperty.getPollName());
         log.info("创建hikari数据源 -> {}", dataSourceProperty.getUrl());
         return new HikariDataSource(config);
+    }
+
+    /**
+     * 创建其他数据源
+     *
+     * @param dataSourceProperty 数据源参数
+     * @return 数据源
+     */
+    private DataSource createOtherDataSource(DataSourceProperty dataSourceProperty) {
+        try {
+            Object o1 = createMethod.invoke(null);
+            Object o2 = typeMethod.invoke(o1, dataSourceProperty.getType());
+            Object o3 = urlMethod.invoke(o2, dataSourceProperty.getUrl());
+            Object o4 = usernameMethod.invoke(o3, dataSourceProperty.getUsername());
+            Object o5 = passwordMethod.invoke(o4, dataSourceProperty.getPassword());
+            Object o6 = driverClassNameMethod.invoke(o5, dataSourceProperty.getDriverClassName());
+            return (DataSource) buildMethod.invoke(o6);
+        } catch (Exception e) {
+            throw new RuntimeException("多数据源创建数据源失败");
+        }
     }
 }

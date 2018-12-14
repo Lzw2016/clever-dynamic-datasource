@@ -9,8 +9,7 @@ import javax.sql.DataSource;
 import java.io.Serializable;
 
 /**
- * @author TaoYu
- * @since 1.2.0
+ * 数据源配置
  */
 @Data
 public class DataSourceProperty implements Serializable {
