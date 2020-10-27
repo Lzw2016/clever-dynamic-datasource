@@ -1,5 +1,6 @@
 package org.clever.dynamic.datasource.provider;
 
+import com.alibaba.druid.pool.DruidAbstractDataSource;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+
 
 /**
  * 数据源创建器
@@ -49,8 +51,8 @@ class DynamicDataSourceCreator {
      */
     private Boolean hikariExists = false;
 
-    private DruidConfig druidGlobalConfig;
-    private HikariCpConfig hikariGlobalConfig;
+    private final DruidConfig druidGlobalConfig;
+    private final HikariCpConfig hikariGlobalConfig;
 
     DynamicDataSourceCreator(DruidConfig druidGlobalConfig, HikariCpConfig hikariGlobalConfig) {
         this.druidGlobalConfig = druidGlobalConfig;
@@ -141,12 +143,15 @@ class DynamicDataSourceCreator {
         dataSource.setUrl(dataSourceProperty.getUrl());
         dataSource.setDriverClassName(dataSourceProperty.getDriverClassName());
         dataSource.setName(dataSourceProperty.getPollName());
-
         DruidConfig config = dataSourceProperty.getDruid();
         dataSource.configFromPropety(config.toProperties(druidGlobalConfig));
         //连接参数单独设置
         dataSource.setConnectProperties(config.getConnectionProperties());
         //设置druid内置properties不支持的的参数
+        Integer maxWait = config.getMaxWait() == null ? druidGlobalConfig.getMaxWait() : config.getMaxWait();
+        if (maxWait != null && !maxWait.equals(DruidAbstractDataSource.DEFAULT_MAX_WAIT)) {
+            dataSource.setMaxWait(maxWait);
+        }
         Boolean testOnReturn = config.getTestOnReturn() == null ? druidGlobalConfig.getTestOnReturn() : config.getTestOnReturn();
         if (testOnReturn != null && testOnReturn.equals(true)) {
             dataSource.setTestOnReturn(true);
@@ -155,7 +160,6 @@ class DynamicDataSourceCreator {
         if (validationQueryTimeout != null && !validationQueryTimeout.equals(-1)) {
             dataSource.setValidationQueryTimeout(validationQueryTimeout);
         }
-
         Boolean sharePreparedStatements = config.getSharePreparedStatements() == null ? druidGlobalConfig.getSharePreparedStatements() : config.getSharePreparedStatements();
         if (sharePreparedStatements != null && sharePreparedStatements.equals(true)) {
             dataSource.setSharePreparedStatements(true);

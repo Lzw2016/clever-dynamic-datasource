@@ -1,12 +1,11 @@
 package org.clever.dynamic.datasource.autoconfigure.druid;
 
+import com.alibaba.druid.pool.DruidAbstractDataSource;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.util.Properties;
-
-import static com.alibaba.druid.pool.DruidAbstractDataSource.*;
 
 /**
  * Druid参数配置
@@ -37,7 +36,7 @@ public class DruidConfig implements Serializable {
     private Integer notFullTimeoutRetryCount;
     private Integer maxWaitThreadCount;
     private Boolean failFast;
-    private Integer phyTimeoutMillis;
+    private Long phyTimeoutMillis;
     private Boolean keepAlive;
     private Boolean poolPreparedStatements;
     private Boolean initVariants;
@@ -56,27 +55,27 @@ public class DruidConfig implements Serializable {
     public Properties toProperties(DruidConfig globalConfig) {
         Properties properties = new Properties();
         Integer tempInitialSize = initialSize == null ? globalConfig.getInitialSize() : initialSize;
-        if (tempInitialSize != null && !tempInitialSize.equals(DEFAULT_INITIAL_SIZE)) {
+        if (tempInitialSize != null && !tempInitialSize.equals(DruidAbstractDataSource.DEFAULT_INITIAL_SIZE)) {
             properties.setProperty("druid.initialSize", String.valueOf(tempInitialSize));
         }
 
         Integer tempMaxActive = maxActive == null ? globalConfig.getMaxActive() : maxActive;
-        if (tempMaxActive != null && !tempMaxActive.equals(DEFAULT_MAX_WAIT)) {
+        if (tempMaxActive != null && !tempMaxActive.equals(DruidAbstractDataSource.DEFAULT_MAX_WAIT)) {
             properties.setProperty("druid.maxActive", String.valueOf(tempMaxActive));
         }
 
         Integer tempMinIdle = minIdle == null ? globalConfig.getMinIdle() : minIdle;
-        if (tempMinIdle != null && !tempMinIdle.equals(DEFAULT_MIN_IDLE)) {
+        if (tempMinIdle != null && !tempMinIdle.equals(DruidAbstractDataSource.DEFAULT_MIN_IDLE)) {
             properties.setProperty("druid.minIdle", String.valueOf(tempMinIdle));
         }
 
         Integer tempMaxWait = maxWait == null ? globalConfig.getMaxWait() : maxWait;
-        if (tempMaxWait != null && !tempMaxWait.equals(DEFAULT_MAX_WAIT)) {
+        if (tempMaxWait != null && !tempMaxWait.equals(DruidAbstractDataSource.DEFAULT_MAX_WAIT)) {
             properties.setProperty("druid.maxWait", String.valueOf(tempMaxWait));
         }
 
         Long tempTimeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis == null ? globalConfig.getTimeBetweenEvictionRunsMillis() : timeBetweenEvictionRunsMillis;
-        if (tempTimeBetweenEvictionRunsMillis != null && !tempTimeBetweenEvictionRunsMillis.equals(DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS)) {
+        if (tempTimeBetweenEvictionRunsMillis != null && !tempTimeBetweenEvictionRunsMillis.equals(DruidAbstractDataSource.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS)) {
             properties.setProperty("druid.timeBetweenEvictionRunsMillis", String.valueOf(tempTimeBetweenEvictionRunsMillis));
         }
 
@@ -91,22 +90,22 @@ public class DruidConfig implements Serializable {
         }
 
         Long tempMinEvictableIdleTimeMillis = minEvictableIdleTimeMillis == null ? globalConfig.getMinEvictableIdleTimeMillis() : minEvictableIdleTimeMillis;
-        if (tempMinEvictableIdleTimeMillis != null && !tempMinEvictableIdleTimeMillis.equals(DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS)) {
+        if (tempMinEvictableIdleTimeMillis != null && !tempMinEvictableIdleTimeMillis.equals(DruidAbstractDataSource.DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS)) {
             properties.setProperty("druid.minEvictableIdleTimeMillis", String.valueOf(tempMinEvictableIdleTimeMillis));
         }
 
         Long tempMaxEvictableIdleTimeMillis = maxEvictableIdleTimeMillis == null ? globalConfig.getMaxEvictableIdleTimeMillis() : maxEvictableIdleTimeMillis;
-        if (tempMaxEvictableIdleTimeMillis != null && !tempMaxEvictableIdleTimeMillis.equals(DEFAULT_MAX_EVICTABLE_IDLE_TIME_MILLIS)) {
+        if (tempMaxEvictableIdleTimeMillis != null && !tempMaxEvictableIdleTimeMillis.equals(DruidAbstractDataSource.DEFAULT_MAX_EVICTABLE_IDLE_TIME_MILLIS)) {
             properties.setProperty("druid.maxEvictableIdleTimeMillis", String.valueOf(tempMaxEvictableIdleTimeMillis));
         }
 
         Boolean tempTestWhileIdle = testWhileIdle == null ? globalConfig.getTestWhileIdle() : testWhileIdle;
-        if (tempTestWhileIdle != null && !tempTestWhileIdle.equals(DEFAULT_WHILE_IDLE)) {
+        if (tempTestWhileIdle != null && !tempTestWhileIdle.equals(DruidAbstractDataSource.DEFAULT_WHILE_IDLE)) {
             properties.setProperty("druid.testWhileIdle", "false");
         }
 
         Boolean tempTestOnBorrow = testOnBorrow == null ? globalConfig.getTestOnBorrow() : testOnBorrow;
-        if (tempTestOnBorrow != null && !tempTestOnBorrow.equals(DEFAULT_TEST_ON_BORROW)) {
+        if (tempTestOnBorrow != null && !tempTestOnBorrow.equals(DruidAbstractDataSource.DEFAULT_TEST_ON_BORROW)) {
             properties.setProperty("druid.testOnBorrow", "true");
         }
 
@@ -160,8 +159,8 @@ public class DruidConfig implements Serializable {
             properties.setProperty("druid.failFast", "true");
         }
 
-        Integer tempPhyTimeoutMillis = phyTimeoutMillis == null ? globalConfig.getPhyTimeoutMillis() : phyTimeoutMillis;
-        if (tempPhyTimeoutMillis != null && !tempPhyTimeoutMillis.equals(DEFAULT_PHY_TIMEOUT_MILLIS)) {
+        Long tempPhyTimeoutMillis = phyTimeoutMillis == null ? globalConfig.getPhyTimeoutMillis() : phyTimeoutMillis;
+        if (tempPhyTimeoutMillis != null && !tempPhyTimeoutMillis.equals(DruidAbstractDataSource.DEFAULT_PHY_TIMEOUT_MILLIS)) {
             properties.setProperty("druid.phyTimeoutMillis", String.valueOf(tempPhyTimeoutMillis));
         }
 
