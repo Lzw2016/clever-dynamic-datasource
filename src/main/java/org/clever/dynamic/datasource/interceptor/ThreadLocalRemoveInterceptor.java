@@ -3,7 +3,6 @@ package org.clever.dynamic.datasource.interceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.clever.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ThreadLocalRemoveInterceptor implements HandlerInterceptor {
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         DynamicDataSourceContextHolder.remove();
         log.debug("清除 ThreadLocal DynamicDataSourceLookupKey");
     }
